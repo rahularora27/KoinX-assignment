@@ -1,6 +1,6 @@
 export default function GetStarted() {
   return (
-    <div className="rounded-lg bg-[#0052FE] p-5 text-center text-white">
+    <div className="rounded-lg bg-[#0052FE] p-10 text-center text-white">
       <img
         src="/Frame.svg"
         alt="Get Started"

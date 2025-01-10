@@ -11,17 +11,16 @@ const Header = () => {
 
   return (
     <header className="relative border-b border-gray-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <nav className="flex h-16 items-center justify-between">
+      <div className="max-w-screen mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="flex h-[60px] items-center justify-between lg:h-[80px]">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src="/KoinX.svg"
               alt="KoinX Logo"
               width={96}
-              height={32}
+              height={24}
               priority
-              className="h-8 w-auto"
             />
           </Link>
 
@@ -29,23 +28,23 @@ const Header = () => {
           <div className="hidden items-center space-x-8 md:flex">
             <Link
               href="/crypto-taxes"
-              className="text-sm font-semibold text-gray-700 hover:text-gray-900"
+              className="text-[16px] font-semibold text-gray-700 hover:text-gray-900"
             >
               Crypto Taxes
             </Link>
             <Link
               href="/free-tools"
-              className="text-sm font-semibold text-gray-700 hover:text-gray-900"
+              className="text-[16px] font-semibold text-gray-700 hover:text-gray-900"
             >
               Free Tools
             </Link>
             <Link
               href="/resource-center"
-              className="text-sm font-semibold text-gray-700 hover:text-gray-900"
+              className="text-[16px] font-semibold text-gray-700 hover:text-gray-900"
             >
               Resource Center
             </Link>
-            <button className="rounded-lg bg-[#0052FE] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700">
+            <button className="rounded-lg bg-[#0052FE] px-8 py-2 text-[16px] font-semibold text-white transition-colors hover:bg-blue-700">
               Get Started
             </button>
           </div>

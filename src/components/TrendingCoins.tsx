@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaCaretUp } from 'react-icons/fa';
+import { FaCaretDown } from 'react-icons/fa';
 
 interface TrendingCoin {
   item: {
@@ -66,13 +68,17 @@ const TrendingCoins = () => {
               </span>
             </div>
             <div
-              className={`text-sm font-medium ${
+              className={`flex items-center gap-1 text-sm font-medium ${
                 coin.item.data.price_change_percentage_24h.usd >= 0
                   ? 'text-green-500'
                   : 'text-red-500'
               }`}
             >
-              {coin.item.data.price_change_percentage_24h.usd >= 0 ? '+' : ''}
+              {coin.item.data.price_change_percentage_24h.usd >= 0 ? (
+                <FaCaretUp />
+              ) : (
+                <FaCaretDown />
+              )}
               {coin.item.data.price_change_percentage_24h.usd.toFixed(2)}%
             </div>
           </Link>

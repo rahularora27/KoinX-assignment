@@ -144,67 +144,62 @@ export default function Performance({ coinId }: { coinId: string }) {
         </div>
 
         <div className="grid grid-cols-1 gap-x-8 md:grid-cols-2">
-          <div className="space-y-4">
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">Bitcoin Price</span>
-              <span className="font-medium">
-                {formatCurrency(marketData.current_price.usd)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">24h Low / 24h High</span>
-              <span className="font-medium">
-                {formatCurrency(marketData.low_24h.usd)} /{' '}
-                {formatCurrency(marketData.high_24h.usd)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">Trading Volume</span>
-              <span className="font-medium">
-                {formatCurrency(marketData.total_volume.usd)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">Market Cap Rank</span>
-              <span className="font-medium">#{marketData.market_cap_rank}</span>
-            </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">Bitcoin Price</span>
+            <span className="font-medium">
+              {formatCurrency(marketData.current_price.usd)}
+            </span>
           </div>
-
-          <div className="space-y-4">
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">Market Cap</span>
-              <span className="font-medium">
-                {formatCurrency(marketData.market_cap.usd)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">Market Cap Dominance</span>
-              <span className="font-medium">
-                {formatPercentage(marketData.market_cap_change_percentage_24h)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">All-Time High</span>
-              <div className="text-right">
-                <div className="font-medium">
-                  {formatCurrency(marketData.ath.usd)}{' '}
-                  <span className="text-red-500">-75.6%</span>
-                </div>
-                <div className="text-sm text-[#768396]">
-                  {getTimeDifference(marketData.ath_date.usd)}
-                </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">24h Low / 24h High</span>
+            <span className="font-medium">
+              {formatCurrency(marketData.low_24h.usd)} /{' '}
+              {formatCurrency(marketData.high_24h.usd)}
+            </span>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">Trading Volume</span>
+            <span className="font-medium">
+              {formatCurrency(marketData.total_volume.usd)}
+            </span>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">Market Cap Rank</span>
+            <span className="font-medium">#{marketData.market_cap_rank}</span>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">Market Cap</span>
+            <span className="font-medium">
+              {formatCurrency(marketData.market_cap.usd)}
+            </span>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">Market Cap Dominance</span>
+            <span className="font-medium">
+              {formatPercentage(marketData.market_cap_change_percentage_24h)}
+            </span>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">All-Time High</span>
+            <div className="text-right">
+              <div className="font-medium">
+                {formatCurrency(marketData.ath.usd)}{' '}
+                <span className="text-red-500">-75.6%</span>
+              </div>
+              <div className="text-sm text-[#768396]">
+                {getTimeDifference(marketData.ath_date.usd)}
               </div>
             </div>
-            <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-              <span className="text-[#768396]">All-Time Low</span>
-              <div className="text-right">
-                <div className="font-medium">
-                  {formatCurrency(marketData.atl.usd)}{' '}
-                  <span className="text-green-500">24729.1%</span>
-                </div>
-                <div className="text-sm text-[#768396]">
-                  {getTimeDifference(marketData.atl_date.usd)}
-                </div>
+          </div>
+          <div className="flex justify-between border-b border-[#DEE1E6] py-3">
+            <span className="text-[#768396]">All-Time Low</span>
+            <div className="text-right">
+              <div className="font-medium">
+                {formatCurrency(marketData.atl.usd)}{' '}
+                <span className="text-green-500">24729.1%</span>
+              </div>
+              <div className="text-sm text-[#768396]">
+                {getTimeDifference(marketData.atl_date.usd)}
               </div>
             </div>
           </div>

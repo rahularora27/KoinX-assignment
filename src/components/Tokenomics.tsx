@@ -25,8 +25,8 @@ export default function Tokenomics() {
   };
 
   const options = {
-    cutout: '75%',
-    radius: '90%',
+    cutout: '65%',
+    radius: '80%',
     plugins: {
       legend: {
         position: 'right' as const,
@@ -35,7 +35,7 @@ export default function Tokenomics() {
           usePointStyle: true,
           pointStyle: 'circle',
           font: {
-            size: 14,
+            size: 16,
             family: 'Inter',
           },
           color: '#1D1D1D',
@@ -51,14 +51,14 @@ export default function Tokenomics() {
   };
 
   return (
-    <div className="rounded-lg bg-white p-6">
+    <div className="hidden rounded-lg bg-white p-6 lg:block">
       <h2 className="mb-6 text-2xl font-semibold">Tokenomics</h2>
 
       <div className="space-y-4">
         <h3 className="text-xl font-semibold">Initial Distribution</h3>
 
         {/* Chart Container */}
-        <div className="my-8 h-[250px] w-full max-w-[680px]">
+        <div className="my-8 h-[250px] w-full max-w-[640px]">
           <Doughnut data={data} options={options} />
         </div>
 

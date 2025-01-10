@@ -23,7 +23,6 @@ const keyEvents = [
     description:
       'Lorem ipsum dolor sit amet consectetur. Ac phasellus risus est faucibus metus quis. Amet sapien quam viverra adipiscing condimentum. Ac consectetur et pretium in a bibendum in. Sed vitae sit nisi viverra in a adipisinc metus quis del',
   },
-  // Add more events if needed
   {
     icon: <BsNewspaper className="text-xl text-white" />,
     bgColor: 'bg-[#0082FF]',
@@ -56,7 +55,7 @@ export default function Sentiment() {
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollContainerRef.current) {
-      const scrollAmount = 500; // Adjust this value as needed
+      const scrollAmount = 500;
       const newScrollLeft =
         scrollContainerRef.current.scrollLeft +
         (direction === 'left' ? -scrollAmount : scrollAmount);
@@ -148,7 +147,7 @@ export default function Sentiment() {
             {estimates.map((item) => (
               <div key={item.label} className="flex items-center gap-4">
                 <span className="w-8 text-sm text-[#7C7E8C]">{item.label}</span>
-                <div className="h-2 flex-1 rounded-sm bg-[#EFF2F5]">
+                <div className="h-2 flex-1 rounded-sm">
                   <div
                     className={`h-full ${item.color} rounded-sm`}
                     style={{ width: `${item.percentage}%` }}

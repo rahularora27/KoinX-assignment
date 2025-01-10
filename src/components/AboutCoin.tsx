@@ -14,7 +14,7 @@ export default function About({ coinId }: AboutProps) {
     <div className="rounded-lg bg-white p-6">
       <h2 className="mb-6 text-2xl font-semibold">About {capitalizedCoinId}</h2>
 
-      <div className="mb-6 space-y-4">
+      <div className="mb-4 space-y-4 border-b pb-4">
         <h3 className="text-xl font-semibold">What is {capitalizedCoinId}?</h3>
         <div className="leading-7 text-[#3E424A]">
           <p>
@@ -27,7 +27,7 @@ export default function About({ coinId }: AboutProps) {
         </div>
       </div>
 
-      <div className="mb-6 border-b border-[#DEE1E6] pb-6">
+      <div className="mb-4 border-b border-[#DEE1E6] pb-4">
         <h3 className="mb-4 text-xl font-semibold">
           Lorem ipsum dolor sit amet
         </h3>
@@ -61,21 +61,11 @@ export default function About({ coinId }: AboutProps) {
       </div>
 
       <div className="space-y-6">
-        <h3 className="text-xl font-semibold">
-          Already Holding {capitalizedCoinId}?
-        </h3>
+        <h3 className="text-xl font-semibold">Already Holding Crypto?</h3>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="mb-4 grid grid-cols-1 gap-4 border-b border-[#DEE1E6] pb-4 md:grid-cols-2">
           <div className="rounded-lg bg-gradient-to-br from-[#79F1A4] to-[#0E5CAD] p-4 text-white">
-            <div className="flex items-center justify-between">
-              <div className="space-y-2">
-                <h4 className="text-lg font-semibold">
-                  Calculate your Profits
-                </h4>
-                <button className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-black">
-                  Check Now <HiArrowRight />
-                </button>
-              </div>
+            <div className="flex items-center space-x-6">
               <Image
                 src="/profit-calc.svg"
                 alt="Tax Calculator"
@@ -83,19 +73,17 @@ export default function About({ coinId }: AboutProps) {
                 height={120}
                 className="rounded-lg"
               />
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold">Calculate your Profits</h4>
+                <button className="flex items-center gap-2 rounded-lg bg-white px-2 py-1 font-semibold text-black">
+                  Check Now <HiArrowRight />
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="rounded-lg bg-gradient-to-br from-[#FF9865] to-[#EF3031] p-4 text-white">
-            <div className="flex items-center justify-between">
-              <div className="space-y-2">
-                <h4 className="text-lg font-semibold">
-                  Calculate your tax liability
-                </h4>
-                <button className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-black">
-                  Check Now <HiArrowRight />
-                </button>
-              </div>
+            <div className="flex items-center space-x-6">
               <Image
                 src="/tax-calc.svg"
                 alt="Tax Calculator"
@@ -103,6 +91,14 @@ export default function About({ coinId }: AboutProps) {
                 height={120}
                 className="rounded-lg"
               />
+              <div className="space-y-2">
+                <h4 className="text-2xl font-bold">
+                  Calculate your tax liability
+                </h4>
+                <button className="flex items-center gap-2 rounded-lg bg-white px-2 py-1 font-semibold text-black">
+                  Check Now <HiArrowRight />
+                </button>
+              </div>
             </div>
           </div>
         </div>
