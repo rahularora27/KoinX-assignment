@@ -1,0 +1,15 @@
+.tv-lightweight-charts {
+  font-family: Inter, sans-serif !important;
+}
+
+.tv-lightweight-charts table {
+  border-spacing: 0 4px !important;
+}
+
+.chart-markup-table {
+  border: none !important;
+}
+
+.chart-page .chart-container {
+  border: none !important;
+}
