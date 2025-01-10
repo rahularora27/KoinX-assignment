@@ -8,7 +8,7 @@ import Performance from '@/components/Performance';
 import Sentiment from '@/components/Sentiment';
 import AboutCoin from '@/components/AboutCoin';
 import Tokenomics from '@/components/Tokenomics';
-import Team from '@/components/Team';
+import Team from '@/components/Team/Team';
 import GetStarted from '@/components/GetStarted';
 
 export default function CoinPage() {
