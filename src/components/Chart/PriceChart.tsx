@@ -19,10 +19,6 @@ interface CoinInfo {
   market_cap_rank: number;
 }
 
-interface ChartData {
-  prices: [number, number][];
-}
-
 const TIME_PERIODS = [
   { label: '7D', value: '7' },
   { label: '1M', value: '30' },

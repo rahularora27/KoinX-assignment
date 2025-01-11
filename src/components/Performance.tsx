@@ -29,7 +29,6 @@ export default function Performance({ coinId }: { coinId: string }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch both data in parallel
         const [marketDataResult, weekDataResult] = await Promise.all([
           fetchWithApiKey(
             `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`
@@ -39,10 +38,8 @@ export default function Performance({ coinId }: { coinId: string }) {
           ),
         ]);
 
-        // Process market data
         setMarketData(marketDataResult.market_data);
 
-        // Process 52-week data
         const prices = weekDataResult.prices;
         let high = -Infinity;
         let low = Infinity;
@@ -134,7 +131,6 @@ export default function Performance({ coinId }: { coinId: string }) {
     } ago)`;
   };
 
-  // Calculate percentage changes
   const highToCurrentChange =
     ((marketData.current_price.usd - weekData.high) / weekData.high) * 100;
   const currentToLowChange =
@@ -143,12 +139,10 @@ export default function Performance({ coinId }: { coinId: string }) {
   return (
     <div className="rounded-lg bg-white p-6">
       <h2 className="mb-6 text-2xl font-semibold">Performance</h2>
-
-      {/* Today's Range */}
       <div className="mb-8">
         <div className="mb-2 flex justify-between text-sm">
-          <span className="text-[#7C7E8C]">Today's Low</span>
-          <span className="text-[#7C7E8C]">Today's High</span>
+          <span className="text-[#7C7E8C]">Today&apos;s Low</span>
+          <span className="text-[#7C7E8C]">Today&apos;s High</span>
         </div>
         <div className="relative h-2 w-full">
           <div className="absolute left-0 right-0 mx-auto h-full w-[75%] rounded-full bg-gradient-to-r from-[#FF4949] via-[#FFAF11] to-[#11EB68]" />
@@ -176,7 +170,6 @@ export default function Performance({ coinId }: { coinId: string }) {
         </div>
       </div>
 
-      {/* 52W Range */}
       <div className="mb-8">
         <div className="mb-2 flex justify-between text-sm">
           <span className="text-[#7C7E8C]">52W Low</span>
@@ -193,14 +186,7 @@ export default function Performance({ coinId }: { coinId: string }) {
                 100
               }%`,
             }}
-          >
-            <div className="absolute left-1/2 top-4 -translate-x-1/2 transform whitespace-nowrap">
-              <span className="flex flex-col items-center text-sm text-[#7C7E8C]">
-                <IoMdArrowDropup className="text-2xl text-black" />
-                {formatCurrency(marketData.current_price.usd)}
-              </span>
-            </div>
-          </div>
+          ></div>
         </div>
         <div className="mt-1 flex justify-between">
           <span>{formatCurrency(weekData.low)}</span>

@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ChartData,
+  ChartOptions,
 } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -24,12 +25,12 @@ export default function Tokenomics() {
     ],
   };
 
-  const options = {
+  const options: ChartOptions<'doughnut'> = {
     cutout: '65%',
     radius: '80%',
     plugins: {
       legend: {
-        position: 'right' as const,
+        position: 'right',
         labels: {
           padding: 20,
           usePointStyle: true,
@@ -46,7 +47,9 @@ export default function Tokenomics() {
       },
     },
     maintainAspectRatio: false,
-    hover: { mode: null as any },
+    hover: {
+      mode: undefined,
+    },
     responsive: true,
   };
 
@@ -58,7 +61,7 @@ export default function Tokenomics() {
         <h3 className="text-xl font-semibold">Initial Distribution</h3>
 
         {/* Chart Container */}
-        <div className="my-8 h-[250px] w-full max-w-[640px]">
+        <div className="my-8 h-[250px] w-full max-w-[840px]">
           <Doughnut data={data} options={options} />
         </div>
 
