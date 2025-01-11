@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { IoMdArrowDropup } from 'react-icons/io';
+import { fetchWithApiKey } from '@/utils/api';
 
 interface MarketData {
   current_price: { usd: number };
@@ -10,42 +12,100 @@ interface MarketData {
   market_cap: { usd: number };
   market_cap_rank: number;
   total_volume: { usd: number };
-  ath: { usd: number };
-  ath_date: { usd: string };
-  atl: { usd: number };
-  atl_date: { usd: string };
   market_cap_change_percentage_24h: number;
 }
 
 export default function Performance({ coinId }: { coinId: string }) {
   const [marketData, setMarketData] = useState<MarketData | null>(null);
+  const [weekData, setWeekData] = useState<{
+    high: number;
+    low: number;
+    highDate: string;
+    lowDate: string;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMarketData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`
-        );
-        const data = await response.json();
-        setMarketData(data.market_data);
+        // Fetch both data in parallel
+        const [marketDataResult, weekDataResult] = await Promise.all([
+          fetchWithApiKey(
+            `https://api.coingecko.com/api/v3/coins/${coinId}?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false`
+          ),
+          fetchWithApiKey(
+            `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=365&interval=daily`
+          ),
+        ]);
+
+        // Process market data
+        setMarketData(marketDataResult.market_data);
+
+        // Process 52-week data
+        const prices = weekDataResult.prices;
+        let high = -Infinity;
+        let low = Infinity;
+        let highDate = '';
+        let lowDate = '';
+
+        prices.forEach(([timestamp, price]: [number, number]) => {
+          if (price > high) {
+            high = price;
+            highDate = new Date(timestamp).toISOString();
+          }
+          if (price < low) {
+            low = price;
+            lowDate = new Date(timestamp).toISOString();
+          }
+        });
+
+        setWeekData({ high, low, highDate, lowDate });
         setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching market data:', error);
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch data');
         setIsLoading(false);
       }
     };
 
-    fetchMarketData();
+    fetchData();
   }, [coinId]);
 
   if (isLoading) {
-    return <div className="rounded-lg bg-white p-6">Loading...</div>;
+    return (
+      <div className="rounded-lg bg-white p-6">
+        <div className="animate-pulse">
+          <div className="mb-8 h-8 w-1/4 rounded bg-gray-200"></div>
+          <div className="space-y-6">
+            <div className="h-20 rounded bg-gray-200"></div>
+            <div className="h-20 rounded bg-gray-200"></div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="h-12 rounded bg-gray-200"></div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  if (!marketData) {
+  if (error) {
     return (
-      <div className="rounded-lg bg-white p-6">Failed to load market data</div>
+      <div className="rounded-lg bg-white p-6">
+        <div className="text-red-500">
+          Error: {error}. Please try again later.
+        </div>
+      </div>
+    );
+  }
+
+  if (!marketData || !weekData) {
+    return (
+      <div className="rounded-lg bg-white p-6">
+        <div className="text-gray-500">No data available.</div>
+      </div>
     );
   }
 
@@ -69,8 +129,16 @@ export default function Performance({ coinId }: { coinId: string }) {
     const date = new Date(dateString);
     const now = new Date();
     const diffYears = now.getFullYear() - date.getFullYear();
-    return `${date.toLocaleDateString()} (${diffYears} year${diffYears !== 1 ? 's' : ''} ago)`;
+    return `${date.toLocaleDateString()} (${diffYears} year${
+      diffYears !== 1 ? 's' : ''
+    } ago)`;
   };
+
+  // Calculate percentage changes
+  const highToCurrentChange =
+    ((marketData.current_price.usd - weekData.high) / weekData.high) * 100;
+  const currentToLowChange =
+    ((marketData.current_price.usd - weekData.low) / weekData.low) * 100;
 
   return (
     <div className="rounded-lg bg-white p-6">
@@ -82,29 +150,29 @@ export default function Performance({ coinId }: { coinId: string }) {
           <span className="text-[#7C7E8C]">Today's Low</span>
           <span className="text-[#7C7E8C]">Today's High</span>
         </div>
-        <div className="relative h-2">
-          <div className="absolute h-full w-full rounded-full bg-gradient-to-r from-[#FF4949] via-[#FFAF11] to-[#11EB68]" />
+        <div className="relative h-2 w-full">
+          <div className="absolute left-0 right-0 mx-auto h-full w-[75%] rounded-full bg-gradient-to-r from-[#FF4949] via-[#FFAF11] to-[#11EB68]" />
           <div
             className="absolute -top-3 -translate-x-1/2 transform"
             style={{
-              left: `${((marketData.current_price.usd - marketData.low_24h.usd) / (marketData.high_24h.usd - marketData.low_24h.usd)) * 100}%`,
+              left: `${
+                ((marketData.current_price.usd - marketData.low_24h.usd) /
+                  (marketData.high_24h.usd - marketData.low_24h.usd)) *
+                100
+              }%`,
             }}
           >
-            <div className="h-4 w-1 rounded-full bg-black" />
             <div className="absolute left-1/2 top-4 -translate-x-1/2 transform whitespace-nowrap">
-              <span className="text-sm">
+              <span className="flex flex-col items-center text-sm text-[#7C7E8C]">
+                <IoMdArrowDropup className="text-2xl text-black" />
                 {formatCurrency(marketData.current_price.usd)}
               </span>
             </div>
           </div>
         </div>
         <div className="mt-1 flex justify-between">
-          <span className="text-sm">
-            {formatCurrency(marketData.low_24h.usd)}
-          </span>
-          <span className="text-sm">
-            {formatCurrency(marketData.high_24h.usd)}
-          </span>
+          <span>{formatCurrency(marketData.low_24h.usd)}</span>
+          <span>{formatCurrency(marketData.high_24h.usd)}</span>
         </div>
       </div>
 
@@ -114,25 +182,29 @@ export default function Performance({ coinId }: { coinId: string }) {
           <span className="text-[#7C7E8C]">52W Low</span>
           <span className="text-[#7C7E8C]">52W High</span>
         </div>
-        <div className="relative h-2">
-          <div className="absolute h-full w-full rounded-full bg-gradient-to-r from-[#FF4949] via-[#FFAF11] to-[#11EB68]" />
+        <div className="relative h-2 w-full">
+          <div className="absolute left-0 right-0 mx-auto h-full w-[75%] rounded-full bg-gradient-to-r from-[#FF4949] via-[#FFAF11] to-[#11EB68]" />
           <div
             className="absolute -top-3 -translate-x-1/2 transform"
             style={{
-              left: `${((marketData.current_price.usd - marketData.atl.usd) / (marketData.ath.usd - marketData.atl.usd)) * 100}%`,
+              left: `${
+                ((marketData.current_price.usd - weekData.low) /
+                  (weekData.high - weekData.low)) *
+                100
+              }%`,
             }}
           >
-            <div className="h-4 w-1 rounded-full bg-black" />
             <div className="absolute left-1/2 top-4 -translate-x-1/2 transform whitespace-nowrap">
-              <span className="text-sm">
+              <span className="flex flex-col items-center text-sm text-[#7C7E8C]">
+                <IoMdArrowDropup className="text-2xl text-black" />
                 {formatCurrency(marketData.current_price.usd)}
               </span>
             </div>
           </div>
         </div>
         <div className="mt-1 flex justify-between">
-          <span className="text-sm">{formatCurrency(marketData.atl.usd)}</span>
-          <span className="text-sm">{formatCurrency(marketData.ath.usd)}</span>
+          <span>{formatCurrency(weekData.low)}</span>
+          <span>{formatCurrency(weekData.high)}</span>
         </div>
       </div>
 
@@ -180,26 +252,30 @@ export default function Performance({ coinId }: { coinId: string }) {
             </span>
           </div>
           <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-            <span className="text-[#768396]">All-Time High</span>
+            <span className="text-[#768396]">52W High</span>
             <div className="text-right">
               <div className="font-medium">
-                {formatCurrency(marketData.ath.usd)}{' '}
-                <span className="text-red-500">-75.6%</span>
+                {formatCurrency(weekData.high)}{' '}
+                <span className="text-red-500">
+                  {highToCurrentChange.toFixed(1)}%
+                </span>
               </div>
               <div className="text-sm text-[#768396]">
-                {getTimeDifference(marketData.ath_date.usd)}
+                {getTimeDifference(weekData.highDate)}
               </div>
             </div>
           </div>
           <div className="flex justify-between border-b border-[#DEE1E6] py-3">
-            <span className="text-[#768396]">All-Time Low</span>
+            <span className="text-[#768396]">52W Low</span>
             <div className="text-right">
               <div className="font-medium">
-                {formatCurrency(marketData.atl.usd)}{' '}
-                <span className="text-green-500">24729.1%</span>
+                {formatCurrency(weekData.low)}{' '}
+                <span className="text-green-500">
+                  +{currentToLowChange.toFixed(1)}%
+                </span>
               </div>
               <div className="text-sm text-[#768396]">
-                {getTimeDifference(marketData.atl_date.usd)}
+                {getTimeDifference(weekData.lowDate)}
               </div>
             </div>
           </div>

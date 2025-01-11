@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import PriceChart from '@/components/PriceChart';
+import PriceChart from '@/components/Chart/PriceChart';
 import TrendingCoins from '@/components/TrendingCoins';
 import Performance from '@/components/Performance';
 import Sentiment from '@/components/Sentiment';
